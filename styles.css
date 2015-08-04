@@ -1,0 +1,9 @@
+html, body {
+	font-family: sans-serif;
+}
+#commandFld {
+	width: 200px;
+}
+#outputFld { 
+	font: 12pt monospace;
+}
