@@ -19,19 +19,36 @@ function display (val) {
 	$('#commandFld').val('');
 }
 
-function Scene(
-	scName,
-	scDesc
-) {
-	this.name = scName;
-	this.desc = scDesc;
-}
 
-Scene.prototype = {
-	printDescription: function () {
+// * Map
+//   - next_scene
+//   - opening_scene
+// * Engine
+//   - play
+// * Scene
+//   - enter
+//   * Death
+//   * Central Corridor
+//   * Laser Weapon Armory
+//   * The Bridge
+
+var Scene = {
+	printDescription: function printDescription() {
 		display(this.desc);
 	}
 };
+
+// death(scene)
+var death = Object.assign(Object.create(Scene), {
+	name: "Death",
+	desc: "Too bad, you died."
+});
+
+// centralCorridor(scene)
+var centralCorridor = Object.assign(Object.create(Scene), {
+	name: "The central corridor",
+	desc: "You are standing in a long, dimly-lit hallway..."
+});
 
 // jquery(document).ready(...
 $(document).ready(function () {
@@ -39,26 +56,11 @@ $(document).ready(function () {
 	$('#commandForm').on('submit', function (evt) {
 		evt.preventDefault();
 
-		var existingText = $('#outputFld').val();
-		var cmd = $('#commandFld').val();
-		var newline = null;
-
-		if (existingText === '') {
-			newline = '';
-		} else {
-			newline = '\n';
-		}
-
-		$('#outputFld').val(existingText + newline + cmd);
-		scrollToBottom('#outputFld');
-
-		$('#commandFld').val('');
+		display($('#commandFld').val());
 	});
 
-	scene = new Scene('A Name', 'This is the description');
+	console.log(centralCorridor);
 
-	console.log(scene);
-
-	scene.printDescription();
+	centralCorridor.printDescription();
 
 });
