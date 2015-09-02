@@ -63,6 +63,8 @@ var Engine = {
 		var currentScene = this.sceneMap.openingScene();
 		var lastScene = this.sceneMap.nextScene('finished');
 		var nextSceneName = null;
+
+		while (currentScene !== lastScene) {
 			nextSceneName = currentScene.enter();
 			currentScene = this.sceneMap.nextScene(nextSceneName);
 		}
@@ -97,6 +99,8 @@ $(document).ready(function () {
 
 		display($('#commandFld').val());
 	});
+
+	console.log(centralCorridor);
 
 	Map.setOpening('centralCorridor');
 	Engine.start(Map);
