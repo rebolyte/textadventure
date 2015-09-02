@@ -1,6 +1,7 @@
 
 function scrollToBottom(elStr) {
-  $(elStr).scrollTop( $(elStr)[0].scrollHeight );
+  // $(elStr).scrollTop( $(elStr)[0].scrollHeight ); // jquery
+  $(elStr).scrollTop( $(elStr).dom[0].scrollHeight ); // sprint.js
 }
 
 function display (val) {
@@ -19,38 +20,76 @@ function display (val) {
 	$('#commandFld').val('');
 }
 
-
-// * Map
-//   - next_scene
-//   - opening_scene
-// * Engine
-//   - play
-// * Scene
-//   - enter
-//   * Death
-//   * Central Corridor
-//   * Laser Weapon Armory
-//   * The Bridge
-
 var Scene = {
+	name: 'An as-of-yet unnamed scene', 
+	desc: 'Uh-oh! This scene has no description yet.',
 	printDescription: function printDescription() {
 		display(this.desc);
+	},
+	enter: function enter() {
+		this.printDescription();
+		return this.next;
 	}
 };
 
-// death(scene)
+var finished = Object.assign(Object.create(Scene), {
+	name: 'Completed',
+	desc: 'You won! Good job.'
+})
+
 var death = Object.assign(Object.create(Scene), {
-	name: "Death",
-	desc: "Too bad, you died."
+	name: 'Death',
+	desc: 'Too bad, you died.',
+	next: 'finished'
 });
 
-// centralCorridor(scene)
 var centralCorridor = Object.assign(Object.create(Scene), {
-	name: "The central corridor",
-	desc: "You are standing in a long, dimly-lit hallway..."
+	name: 'The central corridor',
+	desc: 'You are standing in a long, dimly-lit hallway...',
+	next: 'armory'
 });
 
-// jquery(document).ready(...
+var armory = Object.assign(Object.create(Scene), {
+	name: 'The armory',
+	desc: 'You are surrounded by futuristic-looking weapons...',
+	next: 'death'
+});
+
+var Engine = {
+	start: function start(sceneMap) {
+		this.sceneMap = sceneMap;
+	},
+	play: function play() {
+		var currentScene = this.sceneMap.openingScene();
+		var lastScene = this.sceneMap.nextScene('finished');
+		var nextSceneName = null;
+			nextSceneName = currentScene.enter();
+			currentScene = this.sceneMap.nextScene(nextSceneName);
+		}
+
+		// Print out the description of the last scene.
+		currentScene.enter();
+	}
+};
+
+var Map = {
+	scenes: {
+		finished: finished,
+		death: death, 
+		centralCorridor: centralCorridor,
+		armory: armory
+	},
+	setOpening: function opening(startScene) {
+		this.startScene = startScene;
+	},
+	nextScene: function nextScene(sceneName) {
+		return this.scenes[sceneName];
+	},
+	openingScene: function openingScene() {
+		return this.nextScene(this.startScene);
+	}
+};
+
 $(document).ready(function () {
 
 	$('#commandForm').on('submit', function (evt) {
@@ -59,8 +98,8 @@ $(document).ready(function () {
 		display($('#commandFld').val());
 	});
 
-	console.log(centralCorridor);
-
-	centralCorridor.printDescription();
+	Map.setOpening('centralCorridor');
+	Engine.start(Map);
+	Engine.play();
 
 });
