@@ -6,13 +6,7 @@ function scrollToBottom(elStr) {
 
 function display (val) {
 	var existingText = $('#outputFld').val();
-	var newline = null;
-
-	if (existingText === '') {
-		newline = '';
-	} else {
-		newline = '\n';
-	}
+	var newline = (existingText === '') ? '' : '\n';
 
 	$('#outputFld').val(existingText + newline + val);
 	scrollToBottom('#outputFld');
@@ -61,12 +55,12 @@ var Engine = {
 	},
 	play: function play() {
 		var currentScene = this.sceneMap.openingScene();
-		var lastScene = this.sceneMap.nextScene('finished');
+		var lastScene = this.sceneMap.getScene('finished');
 		var nextSceneName = null;
 
 		while (currentScene !== lastScene) {
 			nextSceneName = currentScene.enter();
-			currentScene = this.sceneMap.nextScene(nextSceneName);
+			currentScene = this.sceneMap.getScene(nextSceneName);
 		}
 
 		// Print out the description of the last scene.
@@ -84,11 +78,11 @@ var Map = {
 	setOpening: function opening(startScene) {
 		this.startScene = startScene;
 	},
-	nextScene: function nextScene(sceneName) {
+	getScene: function getScene(sceneName) {
 		return this.scenes[sceneName];
 	},
 	openingScene: function openingScene() {
-		return this.nextScene(this.startScene);
+		return this.getScene(this.startScene);
 	}
 };
 
@@ -99,8 +93,6 @@ $(document).ready(function () {
 
 		display($('#commandFld').val());
 	});
-
-	console.log(centralCorridor);
 
 	Map.setOpening('centralCorridor');
 	Engine.start(Map);
