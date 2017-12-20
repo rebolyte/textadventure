@@ -1,0 +1,55 @@
+[
+	{
+		"id": 1,
+		"name": "Central Corridor",
+		"desc": "You are standing in a long, dimly-lit hallway. Do you want to walk forward?",
+		"links": [2]
+	},{
+		"id": 2,
+		"name": "Armory",
+		"desc": "You are surrounded by futuristic-looking weapons. Maybe you want to look around?",
+		"items": [
+			{ "name": "phaser", "weight": 1 },
+			{ "name": "medkit", "weight": 1 }
+		],
+		"actions": {
+			"your action": ["$predefinedFuncName", "param-1", "param-2"]
+		},
+		"links": [1, 3, 4]
+	},{
+		"id": 3,
+		"name": "Left Wing",
+		"desc": "The lights are flickering in here, and you think you see something lurking in the corner.",
+		"links": [2],
+		"exit": [
+			["&interactable", "bad guy", "dead"]
+		],
+		"interactables": [
+			{ "name": "bad guy", "decreaseBy": 1 }
+		]
+	},{
+		"id": 4,
+		"name": "Right Wing",
+		"desc": "You can see the planet's twin suns out the window on your right, and there is a round door up ahead.",
+		"items": [
+			{ "name": "space suit", "weight": 2 }
+		],
+		"links": [2, 5]
+	},{
+		"id": 5,
+		"name": "Exit Pod",
+		"desc": "You are crouching amidst the instruments and seatbelts in the ships escape pod.",
+		"links": [4],
+		"entry": [
+			["&inventory", "space suit", true]
+		],
+		"actions": {
+			"escape": ["$navigate", "end"],
+			"instrument": ["$random", [
+				"The button you pushed activated the engines.",
+				"Oxygen masks dropped from the ceiling.",
+				"The button you pushed turned off the lights. You are now sitting in darkness."
+			]]
+		}
+	}
+]

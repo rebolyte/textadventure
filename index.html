@@ -1,30 +1,63 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta name="description" content="Play a text adventure in your browser.">
+	<meta name="keywords" content="text adventure, game, retro, 8bit, 8-bit, ascii, terminal, cli">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Text adventure</title>
+	<link rel="stylesheet" href="https://unpkg.com/tachyons@4.9.0/css/tachyons.min.css" />
 	<link rel="stylesheet" href="styles.css">
-
 </head>
-<body>
+<body class="bg-near-black retro-color code flex flex-column">
+	<div class="bg-black" id="header">
+		<div class="container center ph3 ph5-ns pv2">
+			<h1 class="ma0">Text adventure</h1>
+		</div>
+	</div>
 
-<h1>Text adventure</h1>
+	<section class="container center ph3 ph5-ns flex flex-column items-center justify-center" id="main">
 
-<p>Have fun below!</p>
+		<div class="minw-700">
+			<textarea class="w-100 h5" id="outputFld" readonly></textarea>
+			<form id="commandForm">
+				<input type="text" placeholder="enter commands here" id="commandFld" name="cmd" autocomplete="off">
+				<input type="submit" id="enterBtn" value="Enter">
+			</form>
+		</div>
 
-<textarea cols="60" rows="10" id="outputFld"></textarea>
+	</section>
 
-<br>
+<footer class="mid-gray w-100 pv3 bg-black title fw3" id="footer">
+	<div class="container center ph3 ph5-ns">
+		<div>Copyright &copy; 2017 rebolyte</div>
+	</div>
 
-<form id="commandForm">
-	<input type="text" placeholder="enter commands here" id="commandFld" name="cmd" />
-	<input type="submit" id="enterBtn" value="Enter">
-</form>
+</footer>
 
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> -->
-<!-- <script src="sprint.min.js"></script> -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.1.6/zepto.min.js"></script>
-<script src="assign-polyfill.js"></script>
-<script src="main.js"></script>
+<script>
+	// thanks @davidgilbertson
+	var scripts = [
+		'https://unpkg.com/unistore@3.0.3/dist/unistore.umd.js',
+		'https://cdnjs.cloudflare.com/ajax/libs/zepto/1.1.6/zepto.min.js',
+		'main.js'
+	];
+	var newBrowser = (
+		'Promise' in window &&
+		'assign' in Object
+	);
+	if (!newBrowser) {
+		scripts.unshift(
+			'https://cdn.polyfill.io/v2/polyfill.min.js'
+		)
+	}
+	scripts.forEach(function (src) {
+		var scriptEl = document.createElement('script');
+		scriptEl.src = src;
+		// https://www.html5rocks.com/en/tutorials/speed/script-loading/
+		scriptEl.async = false;
+		document.head.appendChild(scriptEl);
+	});
+</script>
 
 </body>
 </html>

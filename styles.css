@@ -1,6 +1,46 @@
-html, body {
-	font-family: sans-serif;
+html {
+	/* position: relative; */
+	/* min-height: 100%; */
 }
+html, body {
+	height: 100%;
+	/* overflow: hidden; */
+}
+
+input, textarea {
+	color: #eee;
+	background: #111;
+}
+
+.minw-700 {
+	min-width: 700px;
+}
+
+.retro-color {
+	color: #FFFF00;
+}
+
+.link {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.container {
+	max-width: 1140px;
+}
+
+#header {
+	flex: 0 1 50px;
+}
+
+#main {
+	flex: 1 1 auto;
+}
+
+#footer {
+	flex: 0 1 150px;
+}
+
 #commandFld {
 	width: 200px;
 }
